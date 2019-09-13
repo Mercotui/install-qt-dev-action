@@ -6,6 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: store screenshots
-      uses: actions/install-qt-action@master
+      uses: ./ #actions/install-qt-action@master
     - name: Hi!
       run: echo Hi!
