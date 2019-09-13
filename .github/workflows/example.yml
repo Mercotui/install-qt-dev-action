@@ -1,0 +1,11 @@
+name: Example Workflow
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: store screenshots
+      uses: actions/install-qt-action
+    - name: Hi!
+      run: echo Hi!

@@ -1,0 +1,24 @@
+{
+  "name": "install-qt-action",
+  "version": "0.0.1",
+  "description": "A Github action that installs Qt libs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mercotui/install-qt-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mercotui/install-qt-action/issues"
+  },
+  "homepage": "https://github.com/Mercotui/install-qt-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.1.0",
+    "@actions/github": "^1.1.0"
+  }
+}
