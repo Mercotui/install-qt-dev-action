@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Mercotui/install-qt-action#readme",
   "dependencies": {
     "@actions/core": "^1.1.0",
-    "@actions/github": "^1.1.0"
+    "@actions/github": "^1.1.0",
+    "request": "^2.88.0"
   }
 }
