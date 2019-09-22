@@ -5,13 +5,15 @@ const fs = require('fs');
 const child_process = require('child_process');
 
 const installer_url = 'http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe';
+const installer_executable = 'qt-unified-windows-x86-online.exe';
 
-console.log('Downloading Installer:\n'+installer_url);
-download(installer_url, 'qt-unified-windows-x86-online.exe', downloaded);
+console.log('Downloading Installer');
+download(installer_url, installer_executable, downloaded);
 
 function downloaded() {
   console.log('Downloading Completed\nStarting Installer');
-  child_process.execFileSync('node', ['--version'], { stdio: 'inherit' });
+  child_process.execFileSync(installer_executable, ['--help'], { stdio: 'inherit' });
+  console.log('Installer Completed');
 }
 
 function download (url, dest, cb) {
