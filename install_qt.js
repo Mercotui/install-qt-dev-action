@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const actions = require('@actions');
 const axios = require('axios');
 const fs = require('fs');
 const child_process = require('child_process');
@@ -8,7 +9,7 @@ const installer_url = 'http://download.qt.io/official_releases/online_installers
 const installer_executable = 'qt-unified-linux-x64-3.1.1-online.run'
 // 'qt-unified-windows-x86-online.exe';
 
-console.log(core);
+console.log(actions);
 // main();
 
 function main() {
