@@ -5,7 +5,8 @@ const fs = require('fs');
 const child_process = require('child_process');
 
 const installer_url = 'http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe';
-const installer_executable = 'qt-unified-windows-x86-online.exe';
+const installer_executable = 'qt-unified-linux-x64-3.1.1-online.run'
+// 'qt-unified-windows-x86-online.exe';
 
 main();
 
@@ -45,7 +46,7 @@ function saveInstaller(data) {
 }
 
 function runInstaller() {
-  child_process.execFileSync(installer_executable, ['--help'], {
+  child_process.execFileSync(installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
     stdio: 'inherit'
   });
   console.log('Installer Completed');
