@@ -14,23 +14,16 @@ const installer_executable = installer_executables[process.platform];
 const installer_url = installer_base_url + installer_executable;
 
 main();
-function main() {
-  console.log('Downloading Installer');
-  downloadInstaller(installer_url).then((response) => {
-    return saveInstaller(response.data);
-  }).then(() => {
-
+async function main() {
+  try {
+    console.log('Downloading Installer');
+    const response = await downloadInstaller(installer_url);
+    await saveInstaller(response.data);
     console.log('Download Complete\nRunning Installer');
-    runInstaller();
-    // .then(() => {
-    //   console.log('Installer Completed Successfully!');
-    // }).catch((error) => {
-    //   console.log(error);
-    // })
-    ;
-  }).catch((error) => {
-      console.log(error);
-  });
+    await runInstaller();
+  } catch (e) {
+    console.log(error);
+  }
 }
 
 function downloadInstaller() {
@@ -49,9 +42,9 @@ function saveInstaller(data) {
 }
 
 function runInstaller() {
-  fs.chmodSync('./'+installer_executable, 0o775);
+  fs.chmodSync('./' + installer_executable, 0o775);
 
-  child_process.execFileSync('./'+installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
+  child_process.execFileSync('./' + installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
     stdio: 'inherit'
   });
   console.log('Installer Completed');
