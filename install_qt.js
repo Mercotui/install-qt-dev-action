@@ -4,29 +4,31 @@ const axios = require('axios');
 const fs = require('fs');
 const child_process = require('child_process');
 
-const installer_url = 'http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe';
-const installer_executable = 'qt-unified-linux-x64-3.1.1-online.run'
-// 'qt-unified-windows-x86-online.exe';
+const installer_base_url = 'http://download.qt.io/official_releases/online_installers/';
+const installer_executables = {
+  'win32': 'qt-unified-windows-x86-online.exe',
+  'linux': 'qt-unified-linux-x64-online.run',
+  'darwin': 'qt-unified-mac-x64-online.dmg'
+};
+const installer_executable = installer_executables[process.platform];
+const installer_url = installer_base_url + installer_executable;
 
 main();
-
 function main() {
   console.log('Downloading Installer');
-  downloadInstaller().then((response) => {
-    saveInstaller(response.data).then(() => {
-      console.log('Download Complete\nRunning Installer');
-      runInstaller();
-      // .then(() => {
-      //   console.log('Installer Completed Successfully!');
-      // }).catch((error) => {
-      //   console.log(error);
-      // })
-      ;
-    }).catch((error) => {
-      console.log(error);
-    });
+  downloadInstaller(installer_url).then((response) => {
+    return saveInstaller(response.data);
+  }).then(() => {
+    console.log('Download Complete\nRunning Installer');
+    runInstaller();
+    // .then(() => {
+    //   console.log('Installer Completed Successfully!');
+    // }).catch((error) => {
+    //   console.log(error);
+    // })
+    ;
   }).catch((error) => {
-    console.log(error);
+      console.log(error);
   });
 }
 
