@@ -49,12 +49,9 @@ function saveInstaller(data) {
 }
 
 function runInstaller() {
-  const os = process.platform;
-  if (os === 'linux' || os === 'darwin') {
-    fs.chmodSync(installer_executable, 755);
-  }
+  fs.chmodSync('./'+installer_executable, 0o775);
 
-  child_process.execFileSync(installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
+  child_process.execFileSync('./'+installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
     stdio: 'inherit'
   });
   console.log('Installer Completed');
