@@ -19,9 +19,10 @@ async function main() {
     console.log('Downloading Installer');
     const response = await downloadInstaller(installer_url);
     await saveInstaller(response.data);
+
     console.log('Download Complete\nRunning Installer');
     await runInstaller();
-  } catch (e) {
+  } catch (error) {
     console.log(error);
   }
 }
