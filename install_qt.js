@@ -19,6 +19,7 @@ function main() {
   downloadInstaller(installer_url).then((response) => {
     return saveInstaller(response.data);
   }).then(() => {
+
     console.log('Download Complete\nRunning Installer');
     runInstaller();
     // .then(() => {
@@ -48,6 +49,11 @@ function saveInstaller(data) {
 }
 
 function runInstaller() {
+  const os = process.platform;
+  if (os === 'linux' || os === 'darwin') {
+    fs.chmodSync(installer_executable, 755);
+  }
+
   child_process.execFileSync(installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
     stdio: 'inherit'
   });
