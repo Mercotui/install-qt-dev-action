@@ -1,6 +1,5 @@
 /*
- * Qt Installer script for a non-interactive installation of Qt5 on Windows.
- * Installs the 64-bit package if environment variable PLATFORM="x64".
+ * Qt Installer script for a non-interactive installation of Qt5
  */
 
 // jshint strict:false

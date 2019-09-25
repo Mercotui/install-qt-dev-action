@@ -1,55 +1,26 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const actions = require('@actions');
-const axios = require('axios');
+const exec = require('@actions/exec');
+const toolcache = require('@actions/tool-cache');
+
 const fs = require('fs');
-const child_process = require('child_process');
 
-const installer_url = 'http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe';
-const installer_executable = 'qt-unified-linux-x64-3.1.1-online.run'
-// 'qt-unified-windows-x86-online.exe';
+const installer_base_url = 'http://download.qt.io/official_releases/online_installers/';
+const installer_executables = {
+  'windows': 'qt-unified-windows-x86-online.exe',
+  'linux': 'qt-unified-linux-x64-online.run',
+  'macintosh': 'qt-unified-mac-x64-online.dmg'
+};
 
-console.log(actions);
-// main();
+const installer_url = 'http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run';
 
-function main() {
-  console.log('Downloading Installer');
-  downloadInstaller().then((response) => {
-    saveInstaller(response.data).then(() => {
-      console.log('Download Complete\nRunning Installer');
-      runInstaller();
-      // .then(() => {
-      //   console.log('Installer Completed Successfully!');
-      // }).catch((error) => {
-      //   console.log(error);
-      // })
-      ;
-    }).catch((error) => {
-      console.log(error);
-    });
-  }).catch((error) => {
-    console.log(error);
-  });
-}
-
-function downloadInstaller() {
-  return axios.get(installer_url, {
-    responseType: 'stream'
-  });
-}
-
-function saveInstaller(data) {
-  return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(installer_executable);
-    data.pipe(file);
-    file.on("finish", resolve);
-    file.on("error", reject);
-  });
-}
-
-function runInstaller() {
-  child_process.execFileSync(installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
-    stdio: 'inherit'
-  });
-  console.log('Installer Completed');
-}
+console.log('Downloading Installer');
+toolcache.downloadTool(installer_url)
+.then((installer)=>{
+  console.log('Download Complete\nRunning Installer');
+  return exec.exec(installer, ['--verbose', '--script', 'qt_installer_script.qs']);
+}).then(()=>{
+  console.log('Installer Completed Successfully!');
+}).catch((error)=>{
+  console.log(error);
+})
