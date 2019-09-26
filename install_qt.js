@@ -21,10 +21,7 @@ async function main() {
     const response = await downloadInstaller(installer_path);
     await saveInstaller(response.data, installer_path);
     await prepareInstaller(process.platform, installer_path);
-
-    core.startGroup('Running installer');
     await runInstaller(process.platform, installer_path);
-    core.endGroup();
     console.log('Install Complete!');
   } catch (error) {
     console.log(error);
@@ -69,7 +66,7 @@ function prepareInstaller(os, installer_path) {
 
 function runInstaller(os, installer_path) {
   return new Promise((resolve, reject) => {
-    console.log('Running installer');
+    core.startGroup('Running installer');
     var child;
     switch (os) {
       case 'linux':
@@ -91,7 +88,10 @@ function runInstaller(os, installer_path) {
         throw ("Unsuported OS: " + os);
     }
 
-    child.on('close', resolve);
+    child.on('close', ()=>{
+      core.endGroup();
+      resolve();
+    });
     child.on('error', reject);
   });
 }
