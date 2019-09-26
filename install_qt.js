@@ -1,8 +1,9 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const axios = require('axios');
+const util = require('util');
 const fs = require('fs');
 const child_process = require('child_process');
+const axios = require('axios');
 
 const installer_base_url = 'http://download.qt.io/official_releases/online_installers/';
 const installer_executables = {
@@ -10,42 +11,84 @@ const installer_executables = {
   'linux': 'qt-unified-linux-x64-online.run',
   'darwin': 'qt-unified-mac-x64-online.dmg'
 };
-const installer_executable = installer_executables[process.platform];
-const installer_url = installer_base_url + installer_executable;
 
 main();
 async function main() {
   try {
-    const response = await downloadInstaller(installer_url);
-    await saveInstaller(response.data);
-    await runInstaller();
+    const runner_os = process.platform;
+    const installer_path = installer_executables[runner_os];
+
+    const response = await downloadInstaller(installer_path);
+    await saveInstaller(response.data, installer_path);
+    await prepareInstaller(process.platform, installer_path);
+    await runInstaller(process.platform, installer_path);
+    console.log('Install Complete!');
   } catch (error) {
     console.log(error);
   }
 }
 
-function downloadInstaller() {
+function downloadInstaller(installer_path) {
+  const installer_url = installer_base_url + installer_path;
   console.log('Downloading Installer ' + installer_url);
   return axios.get(installer_url, {
     responseType: 'stream'
   });
 }
 
-function saveInstaller(data) {
-  console.log('Saving installer to ' + installer_executable);
+function saveInstaller(data, installer_path) {
+  console.log('Saving installer to ' + installer_path);
   return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(installer_executable);
+    const file = fs.createWriteStream(installer_path);
     data.pipe(file);
     file.on("finish", resolve);
     file.on("error", reject);
   });
 }
 
-function runInstaller() {
-  fs.chmodSync('./' + installer_executable, 0o775);
+function prepareInstaller(os, installer_path) {
+  switch (os) {
+    case 'linux':
+      console.log('Setting installer permissions to 775');
+      const chmod = util.promisify(fs.chmod);
+      return chmod('./' + installer_path, 0o775);
+      break;
+    case 'darwin':
+      console.log('Mounting ' + installer_path);
+      // fs.chmod('./' + installer_path, 0o775);
+      break;
+    case 'win32':
+      break;
+    default:
+      throw ("Unsuported OS: " + os);
+  }
+}
 
-  child_process.execFileSync('xvfb-run', ['./' + installer_executable, '--verbose', '--script', 'qt_installer_script.qs'], {
-    stdio: 'inherit'
+function runInstaller(os, installer_path) {
+  return new Promise((resolve, reject) => {
+    console.log('Running installer');
+    var child;
+    switch (os) {
+      case 'linux':
+        child = child_process.spawn('xvfb-run', ['./' + installer_path, '--verbose', '--script', 'qt_installer_script.qs'], {
+          stdio: 'inherit'
+        });
+        break;
+      case 'darwin':
+        child = child_process.spawn('./' + installer_path, ['--verbose', '--script', 'qt_installer_script.qs'], {
+          stdio: 'inherit'
+        });
+        break;
+      case 'win32':
+        child = child_process.spawn('./' + installer_path, ['--verbose', '--script', 'qt_installer_script.qs'], {
+          stdio: 'inherit'
+        });
+        break;
+      default:
+        throw ("Unsuported OS: " + os);
+    }
+
+    child.on('close', resolve);
+    child.on('error', reject);
   });
-  console.log('Installer Completed');
 }
