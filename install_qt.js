@@ -16,6 +16,10 @@ const installer_url = installer_base_url + installer_executable;
 main();
 async function main() {
   try {
+    if (process.platform === 'linux') {
+      console.log('Installing Dependecies');
+      installDependencies();
+    }
     console.log('Downloading Installer');
     const response = await downloadInstaller(installer_url);
     await saveInstaller(response.data);
@@ -25,6 +29,13 @@ async function main() {
   } catch (error) {
     console.log(error);
   }
+}
+
+function installDependencies(){
+  child_process.execFileSync('apt-get', ['install', 'xvfb'], {
+    stdio: 'inherit'
+  });
+  child_process.execFile('Xvfb');
 }
 
 function downloadInstaller() {
