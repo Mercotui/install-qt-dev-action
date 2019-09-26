@@ -21,7 +21,10 @@ async function main() {
     const response = await downloadInstaller(installer_path);
     await saveInstaller(response.data, installer_path);
     await prepareInstaller(process.platform, installer_path);
+
+    core.startGroup('Running installer');
     await runInstaller(process.platform, installer_path);
+    core.endGroup();
     console.log('Install Complete!');
   } catch (error) {
     console.log(error);
