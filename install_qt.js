@@ -16,35 +16,23 @@ const installer_url = installer_base_url + installer_executable;
 main();
 async function main() {
   try {
-    if (process.platform === 'linux') {
-      console.log('Installing Dependecies');
-      installDependencies();
-    }
-    console.log('Downloading Installer');
     const response = await downloadInstaller(installer_url);
     await saveInstaller(response.data);
-
-    console.log('Download Complete\nRunning Installer');
     await runInstaller();
   } catch (error) {
     console.log(error);
   }
 }
 
-function installDependencies(){
-  child_process.execFileSync('sudo', ['apt-get', 'install', 'xvfb'], {
-    stdio: 'inherit'
-  });
-  child_process.execFile('Xvfb');
-}
-
 function downloadInstaller() {
+  console.log('Downloading Installer ' + installer_url);
   return axios.get(installer_url, {
     responseType: 'stream'
   });
 }
 
 function saveInstaller(data) {
+  console.log('Saving installer to ' + installer_executable);
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(installer_executable);
     data.pipe(file);
@@ -56,7 +44,7 @@ function saveInstaller(data) {
 function runInstaller() {
   fs.chmodSync('./' + installer_executable, 0o775);
 
-  child_process.execFileSync('./' + installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
+  child_process.execFileSync('xvfb-run', ['./' + installer_executable, '--verbose', '--script', 'qt_installer_script.qs'], {
     stdio: 'inherit'
   });
   console.log('Installer Completed');
