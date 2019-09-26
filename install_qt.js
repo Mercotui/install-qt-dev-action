@@ -32,7 +32,7 @@ async function main() {
 }
 
 function installDependencies(){
-  child_process.execFileSync('apt-get', ['install', 'xvfb'], {
+  child_process.execFileSync('sudo', ['apt-get', 'install', 'xvfb'], {
     stdio: 'inherit'
   });
   child_process.execFile('Xvfb');
