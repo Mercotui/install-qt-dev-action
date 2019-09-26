@@ -35,7 +35,7 @@ function installDependencies(){
   child_process.execFileSync('sudo', ['apt-get', 'install', 'xvfb'], {
     stdio: 'inherit'
   });
-  child_process.execFile('Xvfb');
+  // child_process.execFile('Xvfb');
 }
 
 function downloadInstaller() {
@@ -56,7 +56,7 @@ function saveInstaller(data) {
 function runInstaller() {
   fs.chmodSync('./' + installer_executable, 0o775);
 
-  child_process.execFileSync('./' + installer_executable, ['--verbose', '--script', 'qt_installer_script.qs'], {
+  child_process.execFileSync('Xvfb-run', ['./' + installer_executable, '--verbose', '--script', 'qt_installer_script.qs'], {
     stdio: 'inherit'
   });
   console.log('Installer Completed');
