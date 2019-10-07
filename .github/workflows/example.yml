@@ -13,4 +13,4 @@ jobs:
     - name: install qt
       uses: ./ #actions/install-qt-action@master
     - name: Test!
-      run: qmake
+      run: ~/Qt/bin/qmake
