@@ -12,5 +12,5 @@ jobs:
       uses: actions/checkout@v1
     - name: install qt
       uses: ./ #actions/install-qt-action@master
-    - name: Hi!
-      run: echo Hi!
+    - name: Test!
+      run: qmake
