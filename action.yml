@@ -1,13 +1,12 @@
-name: 'Install Qt Action'
+name: 'Install Qt Dev Action'
 description: 'Installs Qt modules using the online installer'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  packages:
+    description: 'The desired packages to install'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+#outputs:
+  #time: # id of output
+    #description: 'The time we greeted you'
 runs:
   using: 'node12'
   main: 'install_qt.js'
