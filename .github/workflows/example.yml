@@ -15,4 +15,4 @@ jobs:
       with:
         packages: ''
     - name: Test!
-      run: tree ~/Qt/
+      run: ~/Qt/MaintenanceTool --help

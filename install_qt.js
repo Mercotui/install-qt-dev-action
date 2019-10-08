@@ -24,8 +24,13 @@ async function main() {
     await runInstaller(process.platform, installer_path);
     console.log('Install Complete!');
   } catch (error) {
-    console.log(error);
+    core.setFailed(`install qt dev action failed: ${error}`);
   }
+}
+
+function prepareInstallerScript() {
+  const packages = core.getInput('packages', { required: true });
+  console.log('Desired packages are: '+packages)
 }
 
 function downloadInstaller(installer_path) {
