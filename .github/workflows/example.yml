@@ -15,4 +15,4 @@ jobs:
       with:
         packages: ''
     - name: Test!
-      run: ~/Qt/bin/qmake
+      run: tree ~/Qt/
