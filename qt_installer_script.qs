@@ -11,12 +11,6 @@
 
 // Look for Name elements in
 // https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt5_5123/Updates.xml
-// Unfortunately it is not possible to disable deps like qt.tools.qtcreator
-var INSTALL_COMPONENTS = [
-    installer.environmentVariable("PLATFORM") == "x64" ?
-    "qt.qt5.5123.win64_msvc2017_64" :
-    "qt.qt5.5123.win32_msvc2017",
-];
 
 function Controller() {
     // Continue on installing to an existing (possibly empty) directory.
@@ -56,8 +50,10 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
     console.log("Step: " + gui.currentPageWidget());
     var page = gui.currentPageWidget();
     page.deselectAll();
+
+    var INSTALL_COMPONENTS = installer.environmentVariable("QT_PACKAGES").split(",");
     for (var i = 0; i < INSTALL_COMPONENTS.length; i++) {
-        page.selectComponent(INSTALL_COMPONENTS[i]);
+        page.selectComponent(INSTALL_COMPONENTS[i].trim());
     }
     gui.clickButton(buttons.NextButton);
 };

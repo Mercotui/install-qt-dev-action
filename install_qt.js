@@ -76,7 +76,8 @@ function runInstaller(os, installer_path) {
     switch (os) {
       case 'linux':
         child = child_process.spawn('xvfb-run', ['./' + installer_path, '--verbose', '--script', 'qt_installer_script.qs'], {
-          stdio: 'inherit'
+          stdio: 'inherit',
+          env: {QT_PACKAGES: "qt.qt5.5140.android_arm64_v8a"}
         });
         break;
       case 'darwin':
