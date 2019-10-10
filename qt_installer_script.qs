@@ -1,3 +1,5 @@
+// https://github.com/wireshark/wireshark/blob/master/tools/qt-installer-windows.qs
+// https://github.com/appveyor/build-images/blob/0d76961abbd8208c709baa89aa1cfbb5778bd17c/scripts/Windows/qt-installer-windows.qs
 /*
  * Qt Installer script for a non-interactive installation of Qt5 on Windows.
  * Installs the 64-bit package if environment variable PLATFORM="x64".
@@ -38,6 +40,17 @@ Controller.prototype.IntroductionPageCallback = function() {
     console.log("Step: " + gui.currentPageWidget());
     gui.clickButton(buttons.NextButton);
 };
+
+Controller.prototype.DynamicTelemetryPluginFormCallback = function() {
+    var widget = gui.currentPageWidget();
+    console.log("Step: " + widget);
+    widget.TelemetryPluginForm.statisticGroupBox.disableStatisticRadioButton.checked = true;
+    gui.clickButton(buttons.NextButton);
+
+    // for(var key in widget.TelemetryPluginForm.statisticGroupBox){
+    //    console.log(key);
+    // }
+}
 
 Controller.prototype.TargetDirectoryPageCallback = function() {
     console.log("Step: " + gui.currentPageWidget());
