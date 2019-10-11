@@ -1,5 +1,9 @@
+// Other scripts can be referenced at:
+
 // https://github.com/wireshark/wireshark/blob/master/tools/qt-installer-windows.qs
 // https://github.com/appveyor/build-images/blob/0d76961abbd8208c709baa89aa1cfbb5778bd17c/scripts/Windows/qt-installer-windows.qs
+// https://github.com/benlau/qtci/blob/master/bin/extract-qt-installer
+
 /*
  * Qt Installer script for a non-interactive installation of Qt5 on Windows.
  * Installs the 64-bit package if environment variable PLATFORM="x64".
