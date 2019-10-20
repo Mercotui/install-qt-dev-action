@@ -23,7 +23,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: install qt
-      uses: actions/install-qt-action
+      uses: actions/install-qt-action@v0.2.1
       with:
         packages: 'qt.qt5.5124.gcc_64, qt.qt5.5124.android_arm64_v8a'
     - name: Test qmake
