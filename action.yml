@@ -9,4 +9,4 @@ inputs:
     #description: 'The time we greeted you'
 runs:
   using: 'node12'
-  main: 'install_qt.js'
+  main: 'src/install_qt.js'
