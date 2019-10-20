@@ -7,7 +7,10 @@ You only have to pass one parameter `packages`: a comma separated list of packag
 Note the package name format, for now you need to manually search for them in the download files.
 For Qt 5.12.4 they can be found in [updates.xml](https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_5124/Updates.xml).
 
-The following example installs Qt for Desktop gcc 64-bit and Android ARM64-v8a:
+Currently the action only supports linux, as it hangs on windows, and I dont know how Apples work.
+I plan to add support soonish though.
+
+The following example installs Qt for Desktop gcc 64-bit and Android ARM64-v8a (which takes around 4 minutes):
 
 ```yml
 name: Example Workflow
