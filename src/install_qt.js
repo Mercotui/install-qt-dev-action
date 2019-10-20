@@ -81,19 +81,19 @@ function runInstaller(os, installer_path, package_list) {
     var child;
     switch (os) {
       case 'linux':
-        child = child_process.spawn('xvfb-run', ['./' + installer_path, '--verbose', '--script', 'qt_installer_script.qs'], {
+        child = child_process.spawn('xvfb-run', ['./' + installer_path, '--verbose', '--script', __dirname+'/qt_installer_script.qs'], {
           stdio: 'inherit',
           env: {QT_PACKAGES: package_list}
         });
         break;
       case 'darwin':
-        child = child_process.spawn('./' + installer_path, ['--verbose', '--script', 'qt_installer_script.qs'], {
+        child = child_process.spawn('./' + installer_path, ['--verbose', '--script', __dirname+'/qt_installer_script.qs'], {
           stdio: 'inherit',
           env: {QT_PACKAGES: package_list}
         });
         break;
       case 'win32':
-        child = child_process.spawn('./' + installer_path, ['--verbose', '--script', 'qt_installer_script.qs'], {
+        child = child_process.spawn('./' + installer_path, ['--verbose', '--script', __dirname+'\\qt_installer_script.qs'], {
           stdio: 'inherit',
           env: {QT_PACKAGES: package_list}
         });
