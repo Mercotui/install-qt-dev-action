@@ -15,4 +15,6 @@ jobs:
       with:
         packages: 'qt.qt5.5124.gcc_64'
     - name: Test!
-      run: /Qt/MaintenanceTool --help
+      run: /Qt/5.12.4/gcc_64/bin/qmake test/test.pro
+      run: make
+      run: ./testapp
