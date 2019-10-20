@@ -70,6 +70,7 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
 
     var INSTALL_COMPONENTS = installer.environmentVariable("QT_PACKAGES").split(",");
     for (var i = 0; i < INSTALL_COMPONENTS.length; i++) {
+        console.log("Selecting: " + INSTALL_COMPONENTS[i].trim());
         page.selectComponent(INSTALL_COMPONENTS[i].trim());
     }
     gui.clickButton(buttons.NextButton);
