@@ -17,20 +17,26 @@ async function main() {
   try {
     const runner_os = process.platform;
     const installer_path = installer_executables[runner_os];
-
+    const settings = await getSettings();
     const response = await downloadInstaller(installer_path);
     await saveInstaller(response.data, installer_path);
     await prepareInstaller(process.platform, installer_path);
-    await runInstaller(process.platform, installer_path);
+    await runInstaller(process.platform, installer_path, settings.packages);
     console.log('Install Complete!');
   } catch (error) {
     core.setFailed(`install qt dev action failed: ${error}`);
   }
 }
 
-function prepareInstallerScript() {
-  const packages = core.getInput('packages', { required: true });
-  console.log('Desired packages are: '+packages)
+function getSettings() {
+  const settings = getInputs();
+  return settings;
+}
+
+function getInputs(){
+  const package_list = core.getInput('packages', { required: true });
+  console.log('Desired packages are: '+package_list)
+  return {packages: package_list};
 }
 
 function downloadInstaller(installer_path) {
@@ -69,7 +75,7 @@ function prepareInstaller(os, installer_path) {
   }
 }
 
-function runInstaller(os, installer_path) {
+function runInstaller(os, installer_path, package_list) {
   return new Promise((resolve, reject) => {
     core.startGroup('Running installer');
     var child;
@@ -77,17 +83,19 @@ function runInstaller(os, installer_path) {
       case 'linux':
         child = child_process.spawn('xvfb-run', ['./' + installer_path, '--verbose', '--script', 'qt_installer_script.qs'], {
           stdio: 'inherit',
-          env: {QT_PACKAGES: "qt.qt5.5124.android_arm64_v8a"}
+          env: {QT_PACKAGES: package_list}
         });
         break;
       case 'darwin':
         child = child_process.spawn('./' + installer_path, ['--verbose', '--script', 'qt_installer_script.qs'], {
-          stdio: 'inherit'
+          stdio: 'inherit',
+          env: {QT_PACKAGES: package_list}
         });
         break;
       case 'win32':
         child = child_process.spawn('./' + installer_path, ['--verbose', '--script', 'qt_installer_script.qs'], {
-          stdio: 'inherit'
+          stdio: 'inherit',
+          env: {QT_PACKAGES: package_list}
         });
         break;
       default:

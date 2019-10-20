@@ -5,7 +5,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest] #, macOS-latest]
+        os: [ubuntu-latest] # windows-latest, macOS-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
@@ -13,6 +13,6 @@ jobs:
     - name: install qt
       uses: ./ #actions/install-qt-action@master
       with:
-        packages: ''
+        packages: 'qt.qt5.5124.android_arm64_v8a, qt.qt5.5124.gcc_64'
     - name: Test!
       run: /Qt/MaintenanceTool --help
