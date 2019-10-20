@@ -1,5 +1,8 @@
 name: 'Install Qt Dev Action'
 description: 'Installs Qt modules using the online installer'
+branding:
+  color: 'green'
+  icon: 'download-cloud'  
 inputs:
   packages:
     description: 'The desired packages to install'
