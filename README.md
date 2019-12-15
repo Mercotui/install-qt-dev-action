@@ -1,6 +1,6 @@
 # install-qt-dev-action
 A GitHub action that installs Qt development modules using the Qt online installer gui.
-This is probably not as stable as (Install Qt by jurpel)[https://github.com/marketplace/actions/install-qt],
+This is probably not as stable as [Install Qt by jurpel](https://github.com/marketplace/actions/install-qt),
 but this solution might provide specific packages otherwise not available, so I hope it helps someone!
 
 ## How to use
