@@ -33,7 +33,7 @@ jobs:
 ## How it works
 
 This uses a QT installer script, from the [wireshark tools](https://github.com/wireshark/wireshark/blob/master/tools/qt-installer-windows.qs),
-the license for which is listed in [qt_installer_script_license.txt](qt_installer_script_license.txt).
+the license for which is listed in [LICENSE](LICENSE).
 The Qt installer can change at any time which might require changes to the script.
 
 DO NOT USE IF YOU REQUIRE STABILITY
