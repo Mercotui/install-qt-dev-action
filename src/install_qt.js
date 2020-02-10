@@ -21,7 +21,7 @@ async function main() {
     const response = await downloadInstaller(installer_path);
     await saveInstaller(response.data, installer_path);
     await prepareInstaller(process.platform, installer_path);
-    await runInstaller(process.platform, installer_path, settings.packages);
+    await runInstaller(process.platform, installer_path, settings.packages, settings.timeout);
     console.log('Install Complete!');
   } catch (error) {
     core.setFailed(`install qt dev action failed: ${error}`);
@@ -29,14 +29,11 @@ async function main() {
 }
 
 function getSettings() {
-  const settings = getInputs();
-  return settings;
-}
-
-function getInputs(){
   const package_list = core.getInput('packages', { required: true });
+  const timeout = parseInt(core.getInput('timeout'));
+
   console.log('Desired packages are: '+package_list)
-  return {packages: package_list};
+  return {packages: package_list, timeout: timeout};
 }
 
 function downloadInstaller(installer_path) {
@@ -75,7 +72,7 @@ function prepareInstaller(os, installer_path) {
   }
 }
 
-function runInstaller(os, installer_path, package_list) {
+function runInstaller(os, installer_path, package_list, timeout_time) {
   return new Promise((resolve, reject) => {
     core.startGroup('Running installer');
     var child;
@@ -102,7 +99,12 @@ function runInstaller(os, installer_path, package_list) {
         throw ("Unsuported OS: " + os);
     }
 
+    var timeout = setTimeout(() => {
+      reject("Qt Installer Process timed out");
+    }, timeout_time*60000);
+
     child.on('close', ()=>{
+      clearTimeout(timeout);
       core.endGroup();
       resolve();
     });

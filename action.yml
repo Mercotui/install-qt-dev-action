@@ -2,11 +2,15 @@ name: 'Install Qt Dev Action'
 description: 'Installs Qt modules using the online installer'
 branding:
   color: 'green'
-  icon: 'download-cloud'  
+  icon: 'download-cloud'
 inputs:
   packages:
     description: 'The desired packages to install'
     required: true
+  packages:
+    description: 'The number of minutes after which the action automatically fails'
+    required: false
+    default: '10'
 #outputs:
   #time: # id of output
     #description: 'The time we greeted you'
