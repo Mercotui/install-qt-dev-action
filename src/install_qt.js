@@ -17,6 +17,7 @@ async function main() {
   try {
     const runner_os = process.platform;
     const installer_path = installer_executables[runner_os];
+    await installDependencies ();
     const settings = await getSettings();
     const response = await downloadInstaller(installer_path);
     await saveInstaller(response.data, installer_path);
@@ -26,6 +27,16 @@ async function main() {
   } catch (error) {
     core.setFailed(`install qt dev action failed: ${error}`);
   }
+}
+
+function  installDependencies () {
+  return new Promise((resolve, reject) => {
+    var child = child_process.spawn('sudo', ['apt-get', '-y', 'install', 'libxkbcommon-x11-0'], {
+    stdio: 'inherit'
+  });
+  child.on('close', resolve);
+  child.on('error', reject);
+ });
 }
 
 function getSettings() {
