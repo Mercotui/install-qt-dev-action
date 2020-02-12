@@ -1,4 +1,11 @@
-# install-qt-dev-action
+# DEPRECATED install-qt-dev-action
+Update 12-02-2020:
+This tool no longer works, due to Qt changing their distribution approach.
+All binaries now require valid Qt Accounts to install.
+A possible solution is to add support for passing account details via secrets,
+but I currently have no intention of adding this.
+
+ 
 A GitHub action that installs Qt development modules using the Qt online installer gui.
 This is probably not as stable as [Install Qt by jurpel](https://github.com/marketplace/actions/install-qt),
 but this solution might provide specific packages otherwise not available, so I hope it helps someone!
